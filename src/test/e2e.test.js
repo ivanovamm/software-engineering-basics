@@ -1,4 +1,4 @@
-import { Builder, By, until } from 'selenium-webdriver';
+import { Builder, By, until, Capabilities } from 'selenium-webdriver';
 import { expect } from 'chai';
 import { describe, it, before, after } from 'mocha';
 
@@ -7,11 +7,27 @@ describe('End-to-End Testing', function() {
     let driver;
 
     before(async function() {
-        driver = await new Builder().forBrowser('firefox').build();
+        try {
+            const chromeDriverPath = 'C:/Program Files/chromedriver/chromedriver.exe';
+            const chromeCapabilities = Capabilities.chrome();
+            chromeCapabilities.set('chromeOptions', {
+                args: ['--disable-dev-shm-usage', '--no-sandbox']
+            });
+
+            driver = await new Builder()
+                .forBrowser('chrome')
+                .withCapabilities(chromeCapabilities)
+                .build();
+        } catch (err) {
+            console.error("Error setting up WebDriver: ", err);
+            throw err;
+        }
     });
 
     after(async function() {
-        await driver.quit();
+        if (driver) {
+            await driver.quit();
+        }
     });
 
     it('should load the page and fill the form', async function() {
