@@ -4,7 +4,7 @@ Feature: Keycloak Authentication Test
 
     * url 'http://localhost:8082'
 
-  Scenario: Login and verify redirect
+  Scenario: Login and verify redirect of existent user
     Given path 'realms/myrealm/protocol/openid-connect/auth'
     And param response_type = 'code'
     And param client_id = 'myrealm-client'
@@ -14,9 +14,7 @@ Feature: Keycloak Authentication Test
     When method get
 
     Then status 200
-#    And match response contains '<title>Log in to myrealm</title>'
 
-    # Вводим данные для входа
     Given url 'http://localhost:8082'
     And path 'realms/myrealm/protocol/openid-connect/auth'
     And param response_type = 'code'
@@ -27,8 +25,26 @@ Feature: Keycloak Authentication Test
     And form field username = 'maria123'
     And form field password = 'itmo123'
     And form field grant_type = 'password'
+    When method get
+
+    Then status 200
+
+  Scenario: Login of non-existent user
+    Given url 'http://localhost:8082'
+    And path 'realms/myrealm/protocol/openid-connect/auth'
+    And param response_type = 'code'
+    And param client_id = 'myrealm-client'
+    And param state = 'fhihfi2312'
+    And param scope = 'profile'
+    And param redirect_uri = 'http://localhost:8080/lab2_4-1.0-SNAPSHOT/index.jsp'
+    And form field username = 'new_user'
+    And form field password = 'user123'
+    And form field grant_type = 'password'
     When method post
 
     Then status 400
+
+
+
 
 
