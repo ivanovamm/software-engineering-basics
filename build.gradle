@@ -13,6 +13,7 @@ repositories {
     mavenCentral()
 }
 
+
 dependencies {
     // https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-surefire-plugin
     implementation group: 'org.apache.maven.plugins', name: 'maven-surefire-plugin', version: '3.2.5'
@@ -34,24 +35,39 @@ dependencies {
     testImplementation 'com.intuit.karate:karate-junit5:1.1.0'
 }
 
-test {
+tasks.register('doCompile', JavaCompile) {
+    source = fileTree('src/main/java')
+    classpath = sourceSets.main.compileClasspath
+    destinationDirectory.set(file('build/classes'))
+    options.encoding = 'UTF-8'
+}
+
+tasks.register('doJar', Jar) {
+    dependsOn 'doCompile'
+    archiveBaseName.set(project.name)
+    archiveVersion.set(project.version)
+    from tasks.named('doCompile').get().destinationDirectory
+    destinationDirectory = file("${buildDir}/libs")
+}
+
+
+tasks.register('doBuild') {
+    dependsOn tasks.named('doCompile'), tasks.named('doJar')
+}
+
+tasks.register('doClean', Delete) {
+    delete rootProject.layout.buildDirectory
+}
+
+tasks.named('test'){
     useJUnitPlatform()
 }
 
-war {
-    archiveBaseName = 'lab2_4'
-    archiveVersion = '1.0-SNAPSHOT'
+tasks.register('doMusic', Exec) {
+    dependsOn tasks.named('doBuild')
+
+    commandLine 'cmdmp3.exe', 'music.mp3'
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-    sourceCompatibility = '11'
-    targetCompatibility = '11'
-}
 
-compileJava {
-    options.compilerArgs << "-source" << "11" << "-target" << "11"
-}
-build {
 
-}

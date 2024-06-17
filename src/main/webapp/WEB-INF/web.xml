@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>ControllerServlet</servlet-name>
-        <servlet-class>com.example.servlets.ControllerServlet</servlet-class>
+        <servlet-class>example.servlets.ControllerServlet</servlet-class>
         <init-param>
             <param-name>readonly</param-name>
             <param-value>false</param-value>
@@ -20,7 +20,7 @@
 
     <servlet>
         <servlet-name>AreaCheckServlet</servlet-name>
-        <servlet-class>com.example.servlets.AreaCheckServlet</servlet-class>
+        <servlet-class>example.servlets.AreaCheckServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
