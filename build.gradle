@@ -59,7 +59,7 @@ tasks.register('doClean', Delete) {
     delete rootProject.layout.buildDirectory
 }
 
-tasks.named('test'){
+tasks.named('test') {
     useJUnitPlatform()
 }
 
@@ -77,22 +77,27 @@ file('env.properties').withInputStream { inputStream ->
 }
 
 def javaVersion = envProperties.getProperty('java.version', '20')
-def vmArgs
-vmArgs = envProperties.getProperty('vm.args', '-Xmx2g')
+def vmArgs = envProperties.getProperty('vm.args', '-Xmx2g')
 
 tasks.register('env') {
 
     doFirst {
-        toolchain {
+        java.toolchain {
             languageVersion = JavaLanguageVersion.of(javaVersion)
         }
     }
 
-    exec {
+    doLast {
+        copy {
+            from "C:/Users/Honor/OneDrive/Рабочий стол/опи/opi_lab3/build/libs/opi_lab3-1.0-SNAPSHOT.war"
+            into "C:/Users/Honor/Downloads/wildfly-30.0.0.Final/wildfly-30.0.0.Final/standalone/deployments"
+        }
 
-        commandLine('copy', 'C:\\Users\\Honor\\OneDrive\\Рабочий стол\\опи\\opi_lab3\\build\\libs\\opi_lab3-1.0-SNAPSHOT.war', 'C:\\Users\\Honor\\Downloads\\wildfly-30.0.0.Final\\wildfly-30.0.0.Final\\standalone\\deployments')
+        exec {
+            commandLine('cmd', '/c', 'C:/Users/Honor/Downloads/wildfly-30.0.0.Final/wildfly-30.0.0.Final/bin/standalone.bat')
+            environment 'JAVA_OPTS', vmArgs
+        }
 
-        commandLine('cmd', '/c', 'C:\\Users\\Honor\\Downloads\\wildfly-30.0.0.Final\\wildfly-30.0.0.Final\\bin\\standalone.bat')
 
     }
 }
