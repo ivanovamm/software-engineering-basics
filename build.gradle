@@ -60,7 +60,8 @@ tasks.register('doClean', Delete) {
 }
 
 tasks.named('test') {
-    useJUnitPlatform()
+ useJUnitPlatform()
+
 }
 
 tasks.register('doMusic', Exec) {
@@ -88,6 +89,8 @@ tasks.register('env') {
     }
 
     doLast {
+        delete("C:/Users/Honor/Downloads/wildfly-30.0.0.Final/wildfly-30.0.0.Final/standalone/deployments/opi_lab3-1.0-SNAPSHOT.war")
+        delete("C:/Users/Honor/Downloads/wildfly-30.0.0.Final/wildfly-30.0.0.Final/standalone/deployments/opi_lab3-1.0-SNAPSHOT.war.deployed")
         copy {
             from "C:/Users/Honor/OneDrive/Рабочий стол/опи/opi_lab3/build/libs/opi_lab3-1.0-SNAPSHOT.war"
             into "C:/Users/Honor/Downloads/wildfly-30.0.0.Final/wildfly-30.0.0.Final/standalone/deployments"

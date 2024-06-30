@@ -10,7 +10,7 @@ Feature: Keycloak Authentication Test
     And param client_id = 'myrealm-client'
     And param state = 'fhihfi2312'
     And param scope = 'profile'
-    And param redirect_uri = 'http://localhost:8080/lab2_4-1.0-SNAPSHOT/index.jsp'
+    And param redirect_uri = 'http://localhost:8080/opi_lab3-1.0-SNAPSHOT/index.jsp'
     When method get
     Then status 200
 
@@ -31,7 +31,7 @@ Feature: Keycloak Authentication Test
     And param client_id = 'myrealm-client'
     And param state = 'fhihfi2312'
     And param scope = 'profile'
-    And param redirect_uri = 'http://localhost:8080/lab2_4-1.0-SNAPSHOT/index.jsp'
+    And param redirect_uri = 'http://localhost:8080/opi_lab3-1.0-SNAPSHOT/index.jsp'
     And form field username = 'new_user'
     And form field password = 'user123'
     And form field grant_type = 'password'

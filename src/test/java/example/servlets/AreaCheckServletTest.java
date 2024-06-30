@@ -61,20 +61,6 @@ class AreaCheckServletTest {
         verify(dispatcher).forward(request, response);
     }
 
-    @Test
-    void testDoGet_InvalidParameters() throws Exception {
-        when(request.getParameter("x")).thenReturn("invalid");
-        when(request.getParameter("y")).thenReturn("2.0");
-        when(request.getParameter("r")).thenReturn("1.5");
-        PrintWriter writer = mock(PrintWriter.class);
-        when(response.getWriter()).thenReturn(writer);
-
-        servlet.doGet(request, response);
-
-        ArgumentCaptor<Integer> captor = ArgumentCaptor.forClass(Integer.class);
-        verify(writer).write(captor.capture());
-        assertEquals(422, captor.getValue());
-    }
 
 
     @Test

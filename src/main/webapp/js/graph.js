@@ -1,10 +1,8 @@
-//получение контекста
+
 const canvas = document.getElementsByTagName("canvas")[0];
 const context = canvas.getContext("2d");
 
-// координатная ось
 
-//функция для рисования стрелки в конце линии
 function drawArrowhead(context, fromX, fromY, toX, toY, color) {
     let headLength = 10;
     let angle = Math.atan2(toY - fromY, toX - fromX);
@@ -21,7 +19,6 @@ function drawArrowhead(context, fromX, fromY, toX, toY, color) {
     context.stroke();
 }
 
-//функция для проведения линии
 function drawLine(context, fromX, fromY, toX, toY, width) {
     context.beginPath();
     context.moveTo(fromX, fromY);
@@ -31,7 +28,7 @@ function drawLine(context, fromX, fromY, toX, toY, width) {
     context.stroke();
 }
 
-//функция для рисования точки попадания
+
 function drawDot(context, x, y, color) {
     let radius = 2;
     context.beginPath();
@@ -43,7 +40,7 @@ function drawDot(context, x, y, color) {
     context.fill();
 }
 
-//переводит координаты в пиксели
+
 function numToPixels(x, y) {
     let mouseX, mouseY;
     mouseX = 200 + x * 30;
@@ -71,13 +68,10 @@ canvas.addEventListener("click", function (event) {
     let mouseX = event.clientX - canvas.getBoundingClientRect().left;
     let mouseY = event.clientY - canvas.getBoundingClientRect().top;
 
-    //если клик попал в область графика переходим к обработке
     if (mouseX <= 350 && mouseX >= 50 && mouseY <= 350 && mouseY >= 50) {
-        //рисуем точку
         drawDot(context, mouseX, mouseY, "white");
         let x;
         let y;
-        //вычисляем x и y
         if (mouseX > 200) {
             mouseX -= 200
             x = Math.floor(mouseX / 30);
@@ -99,7 +93,7 @@ canvas.addEventListener("click", function (event) {
         console.log(x);
         console.log(y);
         console.log(rVal);
-        $.get(`http://localhost:8080/lab2_4-1.0-SNAPSHOT/checkArea?action=submitForm&x=${x.toString()}&y=${y.toString()}&r=${rVal}`)
+        $.get(`http://localhost:8080/opi_lab3-1.0-SNAPSHOT/checkArea?action=submitForm&x=${x.toString()}&y=${y.toString()}&r=${rVal}`)
             .done(function(response) {
                 console.log(response);
                 window.location.reload();
@@ -113,22 +107,19 @@ canvas.addEventListener("click", function (event) {
 
 
 function drawCanvas(context){
-    //ось x
+
     drawLine(context, 20, 200, 380, 200, 2);
     drawArrowhead(context, 20, 200, 380, 200);
 
-    //ось y
     drawLine(context, 200, 20, 200, 380, 2)
     drawArrowhead(context, 200, 380, 200, 20);
 
-    //подписи к осям
     context.font = "13px Serif";
     context.fillStyle = "white";
     context.fillText("0", (canvas.width / 2) - 11, canvas.height / 2 + 10);
     context.fillText("X", canvas.width - 20, canvas.height / 2 + 15);
     context.fillText("Y", canvas.width / 2 - 15, 20);
 
-    //разметка оси y
     drawLine(context, 195, 230, 205, 230, 2)
     context.fillText("-1", (canvas.width / 2) - 20, canvas.height / 2 + 31);
 
@@ -160,7 +151,6 @@ function drawCanvas(context){
     drawLine(context, 195, 50, 205, 50, 2)
     context.fillText("5", (canvas.width / 2) - 15, canvas.height / 2 - 151);
 
-    // разметка оси x
     drawLine(context, 230, 195, 230, 205, 2)
     context.fillText("1", (canvas.width / 2) + 27, canvas.height / 2 + 15);
 
@@ -192,9 +182,7 @@ function drawCanvas(context){
     context.fillText("-5", (canvas.width / 2) - 158, canvas.height / 2 + 15);
 
     const rVal = getSelectedRValue();
-    //если r не выбран подсвечиваем его и завершаем обработчик
     if (rVal !== undefined) {
-        //настройка context и отрисовка круга
         context.beginPath();
         context.strokeStyle='white';
         context.globalAlpha = 0.5
@@ -205,7 +193,6 @@ function drawCanvas(context){
         context.fillStyle = '#4390BDFF';
         context.fill();
         context.stroke();
-        //отрисовка квадрата
         context.beginPath();
         context.globalAlpha = 0.5
         context.moveTo(200, 200)
@@ -216,7 +203,6 @@ function drawCanvas(context){
         context.closePath();
         context.fill();
         context.stroke();
-        //отрисовка треугольника
         context.beginPath();
         context.moveTo(200, 200)
         context.lineTo(200 - (rVal * 30), 200);
@@ -225,14 +211,12 @@ function drawCanvas(context){
         context.closePath();
         context.fill();
         context.stroke();
-        //сброс контекста
         context.globalAlpha = 1
         context.lineWidth=2
         context.strokeStyle='white';
     }
 
-    //запрос серверу и отрисовка точек
-    $.get("http://localhost:8080/lab2_4-1.0-SNAPSHOT/getPoints")
+    $.get("http://localhost:8080/opi_lab3-1.0-SNAPSHOT/getPoints")
         .done(function(response) {
             console.log(response);
             let arr = response.split(' ');
